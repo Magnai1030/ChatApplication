@@ -7,7 +7,7 @@ export type TypeProps = {
     family: FontFamily;
     color: string;
     customStyle?: StyleProp<TextStyle>;
-    children: JSX.Element;
+    children: React.ReactNode;
 };
 
 const CustomText: React.FC<TypeProps> = ({

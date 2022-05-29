@@ -1,5 +1,5 @@
 module.exports = {
     client: {
-        url: 'http://138.3.217.184:3000/graphql',
+        url: 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphiql',
     },
 };

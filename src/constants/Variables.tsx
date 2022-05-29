@@ -11,6 +11,9 @@ const boldTextSize = 24;
 const extraBoldTextSize = 32;
 
 const boldBorderRadius = 24;
+const mediumBorderRadius = 22;
+const regularBorderRadius = 16;
+const normalBorderRadius = 14;
 
 export default {
     //Constant
@@ -30,4 +33,7 @@ export default {
     //Border radius
 
     boldBorderRadius,
+    mediumBorderRadius,
+    regularBorderRadius,
+    normalBorderRadius,
 };

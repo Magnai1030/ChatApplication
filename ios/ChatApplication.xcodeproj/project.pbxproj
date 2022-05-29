@@ -14,6 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-ChatApplication-ChatApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ChatApplication-ChatApplicationTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F88CD8CE2843AEAC001F82FC /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F88CD8CA2843AEAC001F82FC /* NotoSans-Medium.ttf */; };
+		F88CD8CF2843AEAC001F82FC /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F88CD8CB2843AEAC001F82FC /* NotoSans-Regular.ttf */; };
+		F88CD8D02843AEAC001F82FC /* NotoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F88CD8CC2843AEAC001F82FC /* NotoSans-Light.ttf */; };
+		F88CD8D12843AEAC001F82FC /* NotoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F88CD8CD2843AEAC001F82FC /* NotoSans-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChatApplication/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ChatApplication-ChatApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApplication-ChatApplicationTests.release.xcconfig"; path = "Target Support Files/Pods-ChatApplication-ChatApplicationTests/Pods-ChatApplication-ChatApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F88CD8CA2843AEAC001F82FC /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSans-Medium.ttf"; path = "../../src/assets/fonts/NotoSans-Medium.ttf"; sourceTree = "<group>"; };
+		F88CD8CB2843AEAC001F82FC /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSans-Regular.ttf"; path = "../../src/assets/fonts/NotoSans-Regular.ttf"; sourceTree = "<group>"; };
+		F88CD8CC2843AEAC001F82FC /* NotoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSans-Light.ttf"; path = "../../src/assets/fonts/NotoSans-Light.ttf"; sourceTree = "<group>"; };
+		F88CD8CD2843AEAC001F82FC /* NotoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSans-SemiBold.ttf"; path = "../../src/assets/fonts/NotoSans-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +124,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F88CD8C92843AE21001F82FC /* Resources */,
 				13B07FAE1A68108700A75B9A /* ChatApplication */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChatApplicationTests */,
@@ -146,6 +155,17 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-ChatApplication-ChatApplicationTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		F88CD8C92843AE21001F82FC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F88CD8CC2843AEAC001F82FC /* NotoSans-Light.ttf */,
+				F88CD8CA2843AEAC001F82FC /* NotoSans-Medium.ttf */,
+				F88CD8CB2843AEAC001F82FC /* NotoSans-Regular.ttf */,
+				F88CD8CD2843AEAC001F82FC /* NotoSans-SemiBold.ttf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,8 +262,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F88CD8CF2843AEAC001F82FC /* NotoSans-Regular.ttf in Resources */,
+				F88CD8D02843AEAC001F82FC /* NotoSans-Light.ttf in Resources */,
+				F88CD8D12843AEAC001F82FC /* NotoSans-SemiBold.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F88CD8CE2843AEAC001F82FC /* NotoSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
