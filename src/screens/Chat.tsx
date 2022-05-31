@@ -7,11 +7,12 @@ import ChatMessage from '@components/containers/chat/ChatMessage';
 import { NavigationProps } from '../router';
 
 const Chat: React.FC<NavigationProps> = ({ route }) => {
+    const { channel } = route.params;
     return (
         <Screen>
-            <ChatHeader channel={route.params.channel} />
-            <ChatMessage channel={route.params.channel} />
-            <ChatFooter channel={route.params.channel} />
+            <ChatHeader channel={channel} />
+            <ChatMessage channel={channel} />
+            <ChatFooter channel={channel} />
         </Screen>
     );
 };

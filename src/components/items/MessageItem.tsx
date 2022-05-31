@@ -7,6 +7,7 @@ import { FontFamily } from '@constants/Types';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
 import StatusWithIcon from '@components/custom/StatusWithIcon';
+import { formatToHour } from '@services/Helper';
 
 type MessageItemProps = {
     message: MessageI;
@@ -59,7 +60,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
                             family={FontFamily.REGULAR}
                             size={Variables.normalBorderRadius}
                             color={Colors.secondaryLightColor}>
-                            {message.datetime}
+                            {formatToHour(message.datetime)}
                         </CustomText>
                     </View>
                 )}

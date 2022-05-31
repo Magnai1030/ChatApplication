@@ -5,12 +5,31 @@ import Variables from '@constants/Variables';
 import SendIcon from '@icons/ic_send.svg';
 import { ChannelI } from '@constants/Types';
 import CustomInput from '@components/custom/CustomInput';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
 type ChatFooterProps = {
     channel: ChannelI;
 };
 
+const POST_MUTATION = gql`
+    mutation postMessage(
+        $channelId: String!
+        $text: String!
+        $userId: String!
+    ) {
+        postMessage(channelId: $channelId, text: $text, userId: $userId) {
+            messageId
+            text
+            userId
+        }
+    }
+`;
+
 const ChatFooter: React.FC<ChatFooterProps> = ({ channel }) => {
+    const [postMessage, { data, loading, error }] = useMutation(POST_MUTATION);
+    useEffect(() => {
+        console.log(data, error);
+    }, [data, error]);
     const [paddingBottom, setPaddingBottom] = useState<number>(0);
     const [searchText, setSearchText] = useState<string>('');
     useEffect(() => {
@@ -32,8 +51,10 @@ const ChatFooter: React.FC<ChatFooterProps> = ({ channel }) => {
             keyboardDidShowListener.remove();
         };
     }, []);
-    const onPressSend = () => {
-        console.log('Send', searchText);
+    const onPressSend = async () => {
+        postMessage({
+            variables: { channelId: '1', text: searchText, userId: 'Sam' },
+        });
     };
     return (
         <View style={[styles.container, { paddingBottom: paddingBottom }]}>

@@ -15,6 +15,33 @@ const mediumBorderRadius = 22;
 const regularBorderRadius = 16;
 const normalBorderRadius = 14;
 
+const userList = [
+    { name: 'Joyse', userId: 'Joyse' },
+    { name: 'Sam', userId: 'Sam' },
+    { name: 'Russell', userId: 'Russell' },
+];
+
+const channelList = [
+    {
+        channelId: '1',
+        title: 'General',
+        status: 'NEW',
+        memberCount: 3,
+    },
+    {
+        channelId: '2',
+        title: 'Technology',
+        status: 'FAILED',
+        memberCount: 3,
+    },
+    {
+        channelId: '3',
+        title: 'LGBT Channel',
+        status: 'LOADING',
+        memberCount: 3,
+    },
+];
+
 export default {
     //Constant
 
@@ -36,4 +63,8 @@ export default {
     mediumBorderRadius,
     regularBorderRadius,
     normalBorderRadius,
+
+    // TempData,
+    userList,
+    channelList,
 };

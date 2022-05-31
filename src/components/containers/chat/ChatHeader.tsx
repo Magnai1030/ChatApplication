@@ -5,8 +5,14 @@ import Variables from '@constants/Variables';
 import ProfileIcon from '@icons/ic_profile.svg';
 import LeftIcon from '@icons/ic_arrow_left.svg';
 import CustomText from '@components/custom/CustomText';
-import { FontFamily, ChannelI } from '@constants/Types';
+import {
+    FontFamily,
+    ChannelI,
+    ButtonSizeType,
+    ButtonStyleType,
+} from '@constants/Types';
 import { NavigationContext } from '@react-navigation/native';
+import Button from '@components/custom/Button';
 
 type ChatHeaderProps = {
     channel: ChannelI;
@@ -22,11 +28,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ channel }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <Pressable
-                    style={styles.buttonContainer}
-                    onPress={() => onPressBack()}>
-                    <LeftIcon />
-                </Pressable>
+                <Button
+                    color={Colors.primaryColor}
+                    onPress={() => onPressBack()}
+                    type={ButtonStyleType.ROUND}
+                    size={ButtonSizeType.BIG}
+                    icon={<LeftIcon />}
+                />
                 <View style={styles.profileInfoContainer}>
                     <CustomText
                         family={FontFamily.SEMIBOLD}

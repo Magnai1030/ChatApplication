@@ -3,6 +3,7 @@ import React from 'react';
 import Colors from './Colors';
 import CheckIcon from '@icons/ic_check.svg';
 import ErrorIcon from '@icons/ic_error.svg';
+import Variables from './Variables';
 
 export type ChildrenProps = {
     children: React.ReactNode;
@@ -50,4 +51,29 @@ export const messageStatusIcon: { [key in MessageStatus]: React.ReactNode } = {
     FAILED: <ErrorIcon />,
     SUCCESS: <CheckIcon />,
     LOADING: <ErrorIcon />,
+};
+
+export interface UserI {
+    name: string;
+    userId: string;
+}
+
+export enum ButtonStyleType {
+    ROUND,
+    FULL,
+}
+
+export enum ButtonSizeType {
+    BIG = 'BIG',
+    NORMAL = 'NORMAL',
+}
+
+export const buttonSizeTranslate: { [key in ButtonSizeType]: number } = {
+    BIG: 56,
+    NORMAL: 44,
+};
+
+export const buttonRadiusTranslate: { [key in ButtonSizeType]: number } = {
+    BIG: Variables.mediumBorderRadius,
+    NORMAL: Variables.regularBorderRadius,
 };

@@ -11,7 +11,7 @@ import Router from './src/router';
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-    uri: 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphiql',
+    uri: 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphql',
     cache,
     defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });

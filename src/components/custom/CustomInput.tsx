@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TextInput, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import React from 'react';
+import { TextInput, StyleSheet } from 'react-native';
 
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
@@ -18,19 +18,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
     onChange,
     onSubmitEditing,
 }) => {
-    // const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-    // const renderValidate = () => {
-    //     let style: StyleProp<ViewStyle> = null;
-    //     if (isInputFocused) {
-    //         style = { borderWidth: 1, borderColor: Colors.primaryColor };
-    //     } else {
-    //         style = {
-    //             borderWidth: 1,
-    //             borderColor: Colors.primaryLightColor,
-    //         };
-    //     }
-    //     return style;
-    // };
     return (
         <TextInput
             onChangeText={text => onChange(text)}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { ChannelI, MessageI, MessageStatus } from '@constants/Types';
+import { gql, useQuery } from '@apollo/client';
 import MessageItem from '@components/items/MessageItem';
 import MessageModal from '@components/modals/MessageModal';
 
@@ -8,45 +9,29 @@ type ChatMessageProps = {
     channel: ChannelI;
 };
 
+const CHAPTERS_QUERY = gql`
+    query GetMesssages($channelId: String!) {
+        fetchLatestMessages(channelId: $channelId) {
+            messageId
+            text
+            datetime
+            userId
+        }
+    }
+`;
+
 const ChatMessage: React.FC<ChatMessageProps> = ({ channel }) => {
-    const [messageHistory, setMessageHistory] = useState<MessageI[]>([
-        {
-            messageId: '21',
-            text: 'ssadds sda sd ds saddsasdasdasdads ds sd dsasdasdsd sd s dsadsad sd sad s ds d sddsa  sda',
-            datetime: 'strin',
-            userId: 'Sam',
-            isMe: false,
-        },
-        {
-            messageId: '21',
-            text: 'ssadds sda sd ds saddsasdasdasdads ds sd dsasdasdsd sd s dsadsad sd sad s ds d sddsa  sda',
-            datetime: 'strin',
-            userId: 'Sam',
-            isMe: false,
-        },
-        {
-            messageId: '21',
-            text: 'ssadds sda sd ds saddsasdasdasdads ds sd dsasdasdsd sd s dsadsad sd sad s ds d sddsa  sda',
-            datetime: 'strin',
-            userId: 'Loca',
-            isMe: true,
-            status: MessageStatus.NEW,
-        },
-        {
-            messageId: '21',
-            text: 'ssadds sda sd ds saddsasdasdasdads ds sd dsasdasdsd sd s dsadsad sd sad s ds d sddsa  sda',
-            datetime: 'strin',
-            userId: 'Sam',
-            isMe: false,
-        },
-        {
-            messageId: '21',
-            text: 'ssadds',
-            datetime: 'strin',
-            userId: 'Sam',
-            isMe: false,
-        },
-    ]);
+    const { data, error, loading } = useQuery(CHAPTERS_QUERY, {
+        variables: { channelId: channel.channelId },
+    });
+    useEffect(() => {
+        const { fetchLatestMessages } = data;
+        if (fetchLatestMessages) {
+            setMessageHistory(fetchLatestMessages);
+        }
+    }, [data]);
+
+    const [messageHistory, setMessageHistory] = useState<MessageI[]>([]);
     const [selectedMessage, setSelectedMessage] = useState<MessageI>();
 
     const onPressDetail = (message: MessageI) => {
@@ -54,16 +39,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ channel }) => {
     };
     return (
         <View style={styles.container}>
-            <ScrollView
-                style={styles.scrollstyle}
-                contentContainerStyle={styles.scrollContainer}>
-                {messageHistory.map((element, index) => (
-                    <MessageItem
-                        key={index}
-                        message={element}
-                        onPressDetail={onPressDetail}
-                    />
-                ))}
+            <ScrollView style={styles.scrollstyle}>
+                <View style={styles.scrollContainer}>
+                    {messageHistory.map((element, index) => (
+                        <MessageItem
+                            key={index}
+                            message={element}
+                            onPressDetail={onPressDetail}
+                        />
+                    ))}
+                </View>
             </ScrollView>
             <MessageModal
                 selectedMessage={selectedMessage}
