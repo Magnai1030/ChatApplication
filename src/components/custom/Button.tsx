@@ -57,6 +57,12 @@ const Button: React.FC<ButtonProps> = ({
                 width: buttonSizeTranslate[size],
                 borderRadius: buttonRadiusTranslate[size],
             };
+        } else if (type === ButtonStyleType.AUTO) {
+            style = {
+                ...styles.autoContainer,
+                height: buttonSizeTranslate[size],
+                borderRadius: buttonRadiusTranslate[size],
+            };
         }
         return style;
     };
@@ -78,7 +84,8 @@ const Button: React.FC<ButtonProps> = ({
                         <CustomText
                             color={titleColor}
                             family={FontFamily.MEDIUM}
-                            size={Variables.regularTextSize}>
+                            size={Variables.regularTextSize}
+                            customStyle={{ marginLeft: icon ? 10 : 0 }}>
                             {title}
                         </CustomText>
                     ) : null}
@@ -99,6 +106,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     roundContainer: {
+        backgroundColor: Colors.primaryColor,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    autoContainer: {
+        width: 'auto',
+        paddingHorizontal: 22,
         backgroundColor: Colors.primaryColor,
         alignItems: 'center',
         justifyContent: 'center',

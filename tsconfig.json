@@ -23,6 +23,7 @@
 
             "@services/*": ["./src/services/*"],
             "@providers/*": ["./src/providers/*"],
+            "@hooks/*": ["./src/hooks/*"],
         }
     },
     "exclude": [

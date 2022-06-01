@@ -9,13 +9,11 @@ import Chat from '@screens/Chat';
 const Stack = createNativeStackNavigator();
 
 type RootStackParamList = {
-    // RegistrationScreen: { selectedRoute: number[] };
     Chat: { channel: ChannelI };
 };
 
 export type NavigationProps = NativeStackScreenProps<
     RootStackParamList,
-    // 'RegistrationScreen',
     'Chat'
 >;
 

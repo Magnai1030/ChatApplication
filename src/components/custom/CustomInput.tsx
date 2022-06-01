@@ -4,6 +4,7 @@ import { TextInput, StyleSheet } from 'react-native';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
 import { FontFamily } from '@constants/Types';
+// import { Container } from './CustomInput.style';
 
 type CustomInputProps = {
     value: string;

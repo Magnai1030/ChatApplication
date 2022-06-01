@@ -2,7 +2,7 @@ import { FontFamily } from '@constants/Types';
 import React from 'react';
 import { Text, StyleProp, TextStyle } from 'react-native';
 
-export type TypeProps = {
+type CustomTextProps = {
     size: number;
     family: FontFamily;
     color: string;
@@ -10,7 +10,7 @@ export type TypeProps = {
     children: React.ReactNode;
 };
 
-const CustomText: React.FC<TypeProps> = ({
+const CustomText: React.FC<CustomTextProps> = ({
     children,
     size,
     color,

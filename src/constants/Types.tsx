@@ -61,6 +61,7 @@ export interface UserI {
 export enum ButtonStyleType {
     ROUND,
     FULL,
+    AUTO,
 }
 
 export enum ButtonSizeType {
@@ -77,3 +78,9 @@ export const buttonRadiusTranslate: { [key in ButtonSizeType]: number } = {
     BIG: Variables.mediumBorderRadius,
     NORMAL: Variables.regularBorderRadius,
 };
+
+export interface MessageFromApi {
+    text: string;
+    channelId: string;
+    userId: string;
+}

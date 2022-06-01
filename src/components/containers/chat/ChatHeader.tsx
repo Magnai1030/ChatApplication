@@ -1,8 +1,7 @@
-import React, { useState, useContext } from 'react';
-import { Pressable, View, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
-import ProfileIcon from '@icons/ic_profile.svg';
 import LeftIcon from '@icons/ic_arrow_left.svg';
 import CustomText from '@components/custom/CustomText';
 import {
@@ -13,6 +12,7 @@ import {
 } from '@constants/Types';
 import { NavigationContext } from '@react-navigation/native';
 import Button from '@components/custom/Button';
+import { UserContext, UserValue } from '@providers/User';
 
 type ChatHeaderProps = {
     channel: ChannelI;
@@ -20,8 +20,7 @@ type ChatHeaderProps = {
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({ channel }) => {
     const navigation = useContext(NavigationContext);
-
-    const [isExpand, setIsExpand] = useState<boolean>(false);
+    const { selectedUser } = useContext(UserContext) as UserValue;
     const onPressBack = () => {
         navigation?.goBack();
     };
@@ -33,6 +32,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ channel }) => {
                     onPress={() => onPressBack()}
                     type={ButtonStyleType.ROUND}
                     size={ButtonSizeType.BIG}
+                    customStyle={styles.backButtonStyle}
                     icon={<LeftIcon />}
                 />
                 <View style={styles.profileInfoContainer}>
@@ -49,11 +49,14 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ channel }) => {
                         {channel.memberCount} members
                     </CustomText>
                 </View>
-                <Pressable
-                    style={styles.buttonContainer}
-                    onPress={() => setIsExpand(!isExpand)}>
-                    <ProfileIcon />
-                </Pressable>
+                <View style={styles.profileButtonStyle}>
+                    <CustomText
+                        family={FontFamily.SEMIBOLD}
+                        size={Variables.regularTextSize}
+                        color={Colors.whiteColor}>
+                        {selectedUser?.name}
+                    </CustomText>
+                </View>
             </View>
         </View>
     );
@@ -67,8 +70,6 @@ const styles = StyleSheet.create({
         height: 'auto',
         paddingTop: 22,
         paddingBottom: 5.5,
-        paddingLeft: 22,
-        paddingRight: 22,
     },
     mainContainer: {
         width: '100%',
@@ -79,17 +80,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
     },
-    buttonContainer: {
-        width: 56,
+    backButtonStyle: {
+        position: 'absolute',
+        left: 22,
+    },
+    profileButtonStyle: {
+        position: 'absolute',
+        right: 22,
+        width: 'auto',
+        paddingHorizontal: 22,
         height: 56,
         borderRadius: Variables.mediumBorderRadius,
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: Colors.secondaryColor,
         alignItems: 'center',
         justifyContent: 'center',
     },
     profileInfoContainer: {
-        flex: 1,
-        paddingHorizontal: 20,
         alignItems: 'center',
         justifyContent: 'center',
     },

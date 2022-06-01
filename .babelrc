@@ -3,6 +3,7 @@
         [
             "module:react-native-dotenv",
             {
+                "envName": "APP_ENV",
                 "moduleName": "@env",
                 "path": ".env",
                 "blocklist": null,
@@ -30,6 +31,7 @@
 
                     "@services": "./src/services",
                     "@providers": "./src/providers",
+                    "@hooks": "./src/hooks"
                 }
             }
         ]

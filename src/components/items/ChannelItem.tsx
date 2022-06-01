@@ -3,8 +3,13 @@ import { Pressable, View, StyleSheet } from 'react-native';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
 import CustomText from '@components/custom/CustomText';
-import { FontFamily, ChannelI } from '@constants/Types';
-import StatusDot from '@components/custom/StatusDot';
+import {
+    FontFamily,
+    ChannelI,
+    ButtonStyleType,
+    ButtonSizeType,
+} from '@constants/Types';
+import RoundView from '@components/custom/RoundView';
 
 type ChannelItemProps = {
     data: ChannelI;
@@ -14,38 +19,20 @@ type ChannelItemProps = {
 const ChannelItem: React.FC<ChannelItemProps> = ({ data, onPress }) => {
     return (
         <Pressable style={styles.container} onPress={() => onPress(data)}>
-            <View style={styles.profileImageContainer}>
+            <RoundView
+                size={ButtonSizeType.BIG}
+                type={ButtonStyleType.ROUND}
+                color={Colors.secondaryColor}
+                titleColor={Colors.whiteColor}
+                title={data.title[0]}
+            />
+            <View style={styles.profileInfoContainer}>
                 <CustomText
                     family={FontFamily.SEMIBOLD}
                     size={Variables.mediumTextSize}
-                    color={Colors.whiteColor}>
-                    {data.title[0]}
+                    color={Colors.secondaryColor}>
+                    {data.title}
                 </CustomText>
-            </View>
-            <View style={styles.profileInfoContainer}>
-                <View style={styles.infoContainer}>
-                    <CustomText
-                        family={FontFamily.SEMIBOLD}
-                        size={Variables.mediumTextSize}
-                        color={Colors.secondaryColor}>
-                        {data.title}
-                    </CustomText>
-                    <CustomText
-                        family={FontFamily.REGULAR}
-                        size={Variables.lightTextSize}
-                        color={Colors.secondaryLightColor}>
-                        9:07am
-                    </CustomText>
-                </View>
-                <View style={styles.infoContainer}>
-                    <CustomText
-                        family={FontFamily.REGULAR}
-                        size={Variables.lightTextSize}
-                        color={Colors.secondaryLightColor}>
-                        Hi
-                    </CustomText>
-                    <StatusDot status={data.status} />
-                </View>
             </View>
         </Pressable>
     );
@@ -60,29 +47,14 @@ const styles = StyleSheet.create({
         marginTop: 11,
         marginBottom: 11,
         borderRadius: Variables.boldBorderRadius,
-        backgroundColor: Colors.primaryLightColor,
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
     },
-    profileImageContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: Variables.mediumBorderRadius,
-        backgroundColor: Colors.secondaryColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    infoContainer: {
-        width: '100%',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     profileInfoContainer: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingHorizontal: 20,
         justifyContent: 'center',
     },

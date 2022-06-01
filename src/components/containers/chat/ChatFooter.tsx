@@ -1,75 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { Pressable, View, StyleSheet, Keyboard } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
 import SendIcon from '@icons/ic_send.svg';
-import { ChannelI } from '@constants/Types';
+import {
+    ChannelI,
+    MessageFromApi,
+    ButtonStyleType,
+    ButtonSizeType,
+} from '@constants/Types';
 import CustomInput from '@components/custom/CustomInput';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { UserContext, UserValue } from '@providers/User';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonContext, CommonValue } from '@providers/Common';
+import Button from '@components/custom/Button';
 
 type ChatFooterProps = {
     channel: ChannelI;
+    sendLoading: boolean;
+    sendMessage: (message: MessageFromApi) => void;
 };
+const SAVEDMESSAGES = 'SAVEDMESSAGES';
 
-const POST_MUTATION = gql`
-    mutation postMessage(
-        $channelId: String!
-        $text: String!
-        $userId: String!
-    ) {
-        postMessage(channelId: $channelId, text: $text, userId: $userId) {
-            messageId
-            text
-            userId
-        }
-    }
-`;
+const ChatFooter: React.FC<ChatFooterProps> = ({
+    channel,
+    sendLoading,
+    sendMessage,
+}) => {
+    const { selectedUser } = useContext(UserContext) as UserValue;
+    const { padding } = useContext(CommonContext) as CommonValue;
 
-const ChatFooter: React.FC<ChatFooterProps> = ({ channel }) => {
-    const [postMessage, { data, loading, error }] = useMutation(POST_MUTATION);
+    const [messageText, setMessageText] = useState<string>('');
+
     useEffect(() => {
-        console.log(data, error);
-    }, [data, error]);
-    const [paddingBottom, setPaddingBottom] = useState<number>(0);
-    const [searchText, setSearchText] = useState<string>('');
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-            'keyboardWillShow',
-            event => {
-                setPaddingBottom(event.endCoordinates.height - 29);
-            },
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-            'keyboardWillHide',
-            () => {
-                setPaddingBottom(0);
-            },
-        );
-
-        return () => {
-            keyboardDidHideListener.remove();
-            keyboardDidShowListener.remove();
+        const getData = async () => {
+            const savedData: MessageFromApi[] = await getSavedMessages();
+            if (messageText === '') {
+                savedData.forEach(element => {
+                    if (
+                        element.text !== '' &&
+                        element.channelId === channel.channelId &&
+                        element.userId == selectedUser?.userId
+                    ) {
+                        setMessageText(element.text);
+                    }
+                });
+            }
         };
+        getData();
     }, []);
-    const onPressSend = async () => {
-        postMessage({
-            variables: { channelId: '1', text: searchText, userId: 'Sam' },
+
+    const manageData = async (text: string) => {
+        if (text !== '') {
+            const savedData = await getSavedMessages();
+            let isPushed = false;
+            const currentData: MessageFromApi = {
+                text: text,
+                channelId: channel.channelId,
+                userId: selectedUser?.userId as string,
+            };
+            savedData.forEach(element => {
+                if (
+                    element.channelId === currentData.channelId &&
+                    element.userId == currentData.userId
+                ) {
+                    element.text = currentData.text;
+                    isPushed = true;
+                }
+            });
+            if (!isPushed) {
+                savedData.push(currentData);
+            }
+            setMessageSave(savedData);
+        }
+    };
+
+    const onChangeText = (text: string) => {
+        const data = JSON.parse(JSON.stringify(text));
+        setMessageText(data);
+        manageData(data);
+    };
+
+    const onPressSend = () => {
+        Keyboard.dismiss();
+        sendMessage({
+            channelId: channel.channelId,
+            text: messageText,
+            userId: selectedUser?.userId as string,
         });
+        setMessageText('');
+    };
+
+    const getSavedMessages = async () => {
+        const response = await AsyncStorage.getItem(SAVEDMESSAGES);
+        return response ? (JSON.parse(response) as MessageFromApi[]) : [];
+    };
+
+    const setMessageSave = async (saveData: MessageFromApi[]) => {
+        const jsonVal = JSON.stringify(saveData);
+        await AsyncStorage.setItem(SAVEDMESSAGES, jsonVal);
+    };
+
+    const isButtonDisabled = () => {
+        let isDisabled = false;
+        if (messageText === '') {
+            isDisabled = true;
+        }
+        return isDisabled;
     };
     return (
-        <View style={[styles.container, { paddingBottom: paddingBottom }]}>
+        <View style={[styles.container, { paddingBottom: padding }]}>
             <View style={styles.subContainer}>
                 <CustomInput
-                    value={searchText}
+                    value={messageText}
                     placeholder="Write message ..."
-                    onChange={text => setSearchText(text)}
-                    onSubmitEditing={() => Keyboard.dismiss()}
+                    onChange={onChangeText}
+                    onSubmitEditing={() => onPressSend()}
                 />
-                <Pressable
-                    style={styles.buttonContainer}
-                    onPress={() => onPressSend()}>
-                    <SendIcon />
-                </Pressable>
+                <Button
+                    color={Colors.infoColor}
+                    disabled={sendLoading || isButtonDisabled()}
+                    loading={sendLoading}
+                    onPress={() => onPressSend()}
+                    type={ButtonStyleType.ROUND}
+                    titleColor={Colors.whiteColor}
+                    size={ButtonSizeType.NORMAL}
+                    icon={<SendIcon />}
+                />
             </View>
         </View>
     );
@@ -93,14 +150,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: Variables.regularBorderRadius,
         backgroundColor: Colors.primaryLightestColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonContainer: {
-        width: 44,
-        height: 44,
-        borderRadius: Variables.normalBorderRadius,
-        backgroundColor: Colors.infoColor,
         alignItems: 'center',
         justifyContent: 'center',
     },

@@ -1,22 +1,23 @@
 import React, { useRef, useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Clipboard } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import Colors from '@constants/Colors';
 import Variables from '@constants/Variables';
 import { MessageI } from '@constants/Types';
-import CustomText from '@components/custom/CustomText';
-import SendIcon from '@icons/ic_send.svg';
-import { FontFamily } from '@constants/Types';
+import { ButtonStyleType, ButtonSizeType } from '@constants/Types';
+import Button from '@components/custom/Button';
 
 type MessageModalProps = {
     selectedMessage: MessageI | undefined;
     setSelectedMessage: (message: MessageI | undefined) => void;
+    onPressResend: (message: MessageI) => void;
 };
 
 const MessageModal: React.FC<MessageModalProps> = ({
     selectedMessage,
     setSelectedMessage,
+    onPressResend,
 }) => {
     const modalizeRef = useRef<Modalize>(null);
 
@@ -30,6 +31,11 @@ const MessageModal: React.FC<MessageModalProps> = ({
         }
     }, [selectedMessage]);
 
+    const onPressCopy = () => {
+        Clipboard.setString(selectedMessage?.text as string);
+        setSelectedMessage(undefined);
+    };
+
     return (
         <Portal>
             <Modalize
@@ -42,38 +48,33 @@ const MessageModal: React.FC<MessageModalProps> = ({
                 modalStyle={styles.modalStyle}
                 overlayStyle={styles.modalOverLayStyle}>
                 <View style={styles.container}>
-                    <Pressable style={styles.buttonStyle}>
-                        <CustomText
-                            family={FontFamily.SEMIBOLD}
-                            size={Variables.mediumTextSize}
-                            color={Colors.infoColor}>
-                            Resend
-                        </CustomText>
-                        <SendIcon color={Colors.infoColor} />
-                    </Pressable>
-                    <Pressable style={styles.buttonStyle}>
-                        <CustomText
-                            family={FontFamily.SEMIBOLD}
-                            size={Variables.mediumTextSize}
-                            color={Colors.secondaryColor}>
-                            Copy
-                        </CustomText>
-                    </Pressable>
-                    <Pressable
-                        style={[
-                            styles.buttonStyle,
-                            {
-                                marginTop: 30,
-                                backgroundColor: Colors.errorColor,
-                            },
-                        ]}>
-                        <CustomText
-                            family={FontFamily.SEMIBOLD}
-                            size={Variables.mediumTextSize}
-                            color={Colors.whiteColor}>
-                            Cancel
-                        </CustomText>
-                    </Pressable>
+                    {selectedMessage ? (
+                        <Button
+                            color={Colors.whiteColor}
+                            titleColor={Colors.infoColor}
+                            onPress={() => onPressResend(selectedMessage)}
+                            type={ButtonStyleType.FULL}
+                            size={ButtonSizeType.BIG}
+                            title={'Resend'}
+                        />
+                    ) : null}
+                    <Button
+                        color={Colors.whiteColor}
+                        titleColor={Colors.secondaryColor}
+                        onPress={() => onPressCopy()}
+                        type={ButtonStyleType.FULL}
+                        size={ButtonSizeType.BIG}
+                        title={'Copy'}
+                    />
+                    <Button
+                        color={Colors.errorColor}
+                        titleColor={Colors.secondaryColor}
+                        onPress={() => setSelectedMessage(undefined)}
+                        type={ButtonStyleType.FULL}
+                        size={ButtonSizeType.BIG}
+                        title={'Cancel'}
+                        customStyle={{ marginTop: 30 }}
+                    />
                 </View>
             </Modalize>
         </Portal>
@@ -98,13 +99,6 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         borderTopLeftRadius: Variables.boldBorderRadius,
         borderTopRightRadius: Variables.boldBorderRadius,
-    },
-    buttonStyle: {
-        width: '100%',
-        height: 56,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: Variables.mediumBorderRadius,
     },
 });
 export default MessageModal;

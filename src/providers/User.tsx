@@ -16,9 +16,7 @@ export const UserProvider: React.FC<ChildrenProps> = ({ children }) => {
     const [userList, setUserList] = useState<UserI[]>([]);
 
     useEffect(() => {
-        setTimeout(() => {
-            setUserList(Variables.userList);
-        }, 2000);
+        setUserList(Variables.userList);
     }, []);
 
     useEffect(() => {

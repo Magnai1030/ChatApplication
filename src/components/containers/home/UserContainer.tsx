@@ -5,8 +5,14 @@ import Variables from '@constants/Variables';
 import ProfileIcon from '@icons/ic_profile.svg';
 import MoreIcon from '@icons/ic_more.svg';
 import CustomText from '@components/custom/CustomText';
-import { FontFamily, UserI } from '@constants/Types';
+import {
+    FontFamily,
+    UserI,
+    ButtonStyleType,
+    ButtonSizeType,
+} from '@constants/Types';
 import { UserContext, UserValue } from '@providers/User';
+import RoundView from '@components/custom/RoundView';
 
 const UserContainer: React.FC = () => {
     const { selectedUser, userList, setSelectedUser } = useContext(
@@ -18,14 +24,18 @@ const UserContainer: React.FC = () => {
         setSelectedUser(user);
         setIsExpand(false);
     };
+
     return (
         <View style={styles.container}>
             <Pressable
                 style={styles.mainContainer}
                 onPress={() => setIsExpand(!isExpand)}>
-                <View style={styles.profileImageContainer}>
-                    <ProfileIcon />
-                </View>
+                <RoundView
+                    size={ButtonSizeType.BIG}
+                    type={ButtonStyleType.ROUND}
+                    color={Colors.primaryColor}
+                    icon={<ProfileIcon />}
+                />
                 <View style={styles.profileInfoContainer}>
                     <View style={styles.infoContainer}>
                         <CustomText
@@ -38,12 +48,14 @@ const UserContainer: React.FC = () => {
                             family={FontFamily.REGULAR}
                             size={Variables.lightTextSize}
                             color={Colors.whiteColor}>
-                            3 Channel
+                            {userList.length} Users
                         </CustomText>
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <MoreIcon />
-                    </View>
+                    <RoundView
+                        size={ButtonSizeType.BIG}
+                        type={ButtonStyleType.ROUND}
+                        icon={<MoreIcon />}
+                    />
                 </View>
             </Pressable>
             {isExpand && userList.length > 0 ? (
@@ -52,7 +64,16 @@ const UserContainer: React.FC = () => {
                         {userList.map((element, index) => (
                             <Pressable
                                 key={index}
-                                style={styles.listStyle}
+                                style={[
+                                    styles.listStyle,
+                                    {
+                                        backgroundColor:
+                                            selectedUser?.userId ===
+                                            element.userId
+                                                ? Colors.secondaryLightColor
+                                                : undefined,
+                                    },
+                                ]}
                                 onPress={() => onPressUser(element)}>
                                 <CustomText
                                     family={FontFamily.SEMIBOLD}
@@ -87,14 +108,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
     },
-    profileImageContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: Variables.mediumBorderRadius,
-        backgroundColor: Colors.primaryColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     profileInfoContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -105,26 +118,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
     },
-    buttonContainer: {
-        width: 56,
-        height: 56,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: Variables.mediumBorderRadius,
-    },
     listContainer: {
         width: '100%',
         height: 'auto',
-        paddingHorizontal: 24,
-        borderBottomLeftRadius: Variables.boldBorderRadius,
-        borderBottomRightRadius: Variables.boldBorderRadius,
+        padding: 16,
+        borderRadius: Variables.boldBorderRadius,
     },
     listInnerContainer: {
         width: '100%',
         height: 'auto',
-        backgroundColor: Colors.primaryLightColor,
-        borderBottomLeftRadius: Variables.boldBorderRadius,
-        borderBottomRightRadius: Variables.boldBorderRadius,
+        padding: 8,
+        backgroundColor: Colors.secondaryLightColor,
+        borderRadius: Variables.boldBorderRadius,
     },
     listStyle: {
         width: '100%',
