@@ -1,4 +1,4 @@
-import { MessageI } from '@constants/Types';
+import { MessageI, MessageStatus } from '@constants/Types';
 
 export const normalizeDate = (string: string | number): string => {
     return String('0' + string).slice(-2);
@@ -23,6 +23,7 @@ export const messagesNormalize = (
         const element = tempData[index];
         if (element.userId == userId) {
             element.isMe = true;
+            element.status = MessageStatus.SUCCESS;
         }
     }
     const sortedMessages = tempData.sort(

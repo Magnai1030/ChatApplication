@@ -7,7 +7,7 @@ import ChatMessage from '@components/containers/chat/ChatMessage';
 import { UserContext, UserValue } from '@providers/User';
 import { NavigationProps } from '../router';
 import useMessage from '@hooks/useMessage';
-import { MessageFromApi, MessageI } from '@constants/Types';
+import { MessageFromApi, MessageI, MessageStatus } from '@constants/Types';
 import { CommonContext, CommonValue } from '@providers/Common';
 import { useGetMoreMessages } from '@hooks/useGetMoreMessages';
 
@@ -31,12 +31,42 @@ const Chat: React.FC<NavigationProps> = ({ route }) => {
         useGetMoreMessages(selectedUser?.userId as string);
 
     useEffect(() => {
-        if (error || sendError || moreError) {
+        if (sendError) {
+            setErrorMessage('Send Failed');
+            changeFailedStatus();
+        }
+        if (moreError || error) {
             setErrorMessage('Sorry Got Error');
         }
     }, [error, sendError, moreError]);
 
+    const changeFailedStatus = () => {
+        const lastMessage: MessageI = JSON.parse(
+            JSON.stringify(currentMessages[currentMessages.length - 1]),
+        );
+        if (
+            lastMessage.status &&
+            lastMessage.status === MessageStatus.LOADING
+        ) {
+            lastMessage.status = MessageStatus.FAILED;
+            const tempMessages: MessageI[] = JSON.parse(
+                JSON.stringify(currentMessages),
+            );
+            tempMessages.splice(tempMessages.length - 1, 1, lastMessage);
+            setCurrentMessages(tempMessages);
+        }
+    };
+
     const sendMessage = (message: MessageFromApi) => {
+        const tempData: MessageI = {
+            messageId: `${currentMessages.length}`,
+            text: message.text,
+            datetime: String(new Date().toISOString()),
+            userId: message.userId,
+            status: MessageStatus.LOADING,
+            isMe: true,
+        };
+        setCurrentMessages([...currentMessages, tempData]);
         postMessage({ variables: message });
     };
 

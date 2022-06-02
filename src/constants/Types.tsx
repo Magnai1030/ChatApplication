@@ -2,6 +2,8 @@ import React from 'react';
 
 import Colors from './Colors';
 import CheckIcon from '@icons/ic_check.svg';
+import LoadingIcon from '@icons/ic_loading.svg';
+
 import ErrorIcon from '@icons/ic_error.svg';
 import Variables from './Variables';
 
@@ -32,6 +34,12 @@ export interface MessageI {
     isMe: boolean;
 }
 
+export interface MessageFromApi {
+    text: string;
+    channelId: string;
+    userId: string;
+}
+
 export enum MessageStatus {
     NEW = 'NEW',
     FAILED = 'FAILED',
@@ -50,7 +58,7 @@ export const messageStatusIcon: { [key in MessageStatus]: React.ReactNode } = {
     NEW: <CheckIcon />,
     FAILED: <ErrorIcon />,
     SUCCESS: <CheckIcon />,
-    LOADING: <ErrorIcon />,
+    LOADING: <LoadingIcon />,
 };
 
 export interface UserI {
@@ -78,9 +86,3 @@ export const buttonRadiusTranslate: { [key in ButtonSizeType]: number } = {
     BIG: Variables.mediumBorderRadius,
     NORMAL: Variables.regularBorderRadius,
 };
-
-export interface MessageFromApi {
-    text: string;
-    channelId: string;
-    userId: string;
-}

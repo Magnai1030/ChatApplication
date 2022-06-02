@@ -13,8 +13,17 @@ import {
 } from '@constants/Types';
 import { UserContext, UserValue } from '@providers/User';
 import RoundView from '@components/custom/RoundView';
+import Animated, {
+    useSharedValue,
+    withTiming,
+    useAnimatedStyle,
+    SlideInDown,
+    SlideInUp,
+} from 'react-native-reanimated';
+import UserItem from '@components/items/UserItem';
 
 const UserContainer: React.FC = () => {
+    const rotatePosX = useSharedValue(0);
     const { selectedUser, userList, setSelectedUser } = useContext(
         UserContext,
     ) as UserValue;
@@ -25,17 +34,33 @@ const UserContainer: React.FC = () => {
         setIsExpand(false);
     };
 
+    const onPressExpand = () => {
+        setIsExpand(!isExpand);
+        rotatePosX.value = withTiming(isExpand ? 0 : 90);
+    };
+
+    const rotateStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    rotate: `${rotatePosX.value}deg`,
+                },
+            ],
+        };
+    });
+
     return (
         <View style={styles.container}>
             <Pressable
                 style={styles.mainContainer}
-                onPress={() => setIsExpand(!isExpand)}>
+                onPress={() => onPressExpand()}>
                 <RoundView
                     size={ButtonSizeType.BIG}
                     type={ButtonStyleType.ROUND}
                     color={Colors.primaryColor}
                     icon={<ProfileIcon />}
                 />
+
                 <View style={styles.profileInfoContainer}>
                     <View style={styles.infoContainer}>
                         <CustomText
@@ -51,40 +76,31 @@ const UserContainer: React.FC = () => {
                             {userList.length} Users
                         </CustomText>
                     </View>
-                    <RoundView
-                        size={ButtonSizeType.BIG}
-                        type={ButtonStyleType.ROUND}
-                        icon={<MoreIcon />}
-                    />
+                    <Animated.View style={rotateStyle}>
+                        <RoundView
+                            size={ButtonSizeType.BIG}
+                            type={ButtonStyleType.ROUND}
+                            icon={<MoreIcon />}
+                        />
+                    </Animated.View>
                 </View>
             </Pressable>
             {isExpand && userList.length > 0 ? (
-                <View style={styles.listContainer}>
+                <Animated.View
+                    style={styles.listContainer}
+                    entering={SlideInDown}
+                    exiting={SlideInUp}>
                     <View style={styles.listInnerContainer}>
                         {userList.map((element, index) => (
-                            <Pressable
-                                key={index}
-                                style={[
-                                    styles.listStyle,
-                                    {
-                                        backgroundColor:
-                                            selectedUser?.userId ===
-                                            element.userId
-                                                ? Colors.secondaryLightColor
-                                                : undefined,
-                                    },
-                                ]}
-                                onPress={() => onPressUser(element)}>
-                                <CustomText
-                                    family={FontFamily.SEMIBOLD}
-                                    size={Variables.mediumTextSize}
-                                    color={Colors.whiteColor}>
-                                    {element.name}
-                                </CustomText>
-                            </Pressable>
+                            <UserItem
+                                data={element}
+                                index={index}
+                                selectedUser={selectedUser?.userId as string}
+                                onPressUser={onPressUser}
+                            />
                         ))}
                     </View>
-                </View>
+                </Animated.View>
             ) : null}
         </View>
     );
