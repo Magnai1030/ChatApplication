@@ -2,19 +2,33 @@
 
 Hello! Chat application created by Magnai.
 
+# Codes
+
+1 - yarn install
+
+2 - cd ios & pod install
+
+3 - yarn start
+
 # Environment
 
 **React native** - Mobile cross platform developer
+
 **TypeScript** - JavaScript with syntax for types
+
 **Apollo** - Supergraph Platform unifies GraphQL across your apps and services, unlocking faster delivery for your engineering teams.
 
 
 ## Important Packages
 
 **@react-native-async-storage/async-storage** - Sets and gets data in Local Storage
+
 **@react-native-community/netinfo** - Connection Info
+
 **react-native-reanimated** - Custom animation package.
+
 **react-native-skeleton-placeholder** - Lazy animation loading.
+
 **react-native-splash-screen** - Removes white screen while loading bundle.
 
 ## Important Actions
